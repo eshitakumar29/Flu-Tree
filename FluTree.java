@@ -1,12 +1,4 @@
 package a4;
-/* NetId(s): ek536
-
- * Name(s): Eshita Kumar
- * What I thought about this assignment: I thought that this assignment was <br>
- * very interesting, especially how it connected a programming concept with <br>
- * current events. In addition to this, I feel that I have a better <br>
- * understanding of trees, recursion, and foreach loops.
- */
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,12 +26,6 @@ import java.util.Set;
  * Important note: The name of each person in the flu tree is unique. Check whether two Person's are
  * the same by calling method equals. */
 public class FluTree {
-
-    /** Replace "-1" by the time you spent on A2 in hours.<br>
-     * Example: for 3 hours 15 minutes, use 3.25<br>
-     * Example: for 4 hours 30 minutes, use 4.50<br>
-     * Example: for 5 hours, use 5 or 5.0 */
-    public static double timeSpent= 6.5;
 
     /** The String to be used as a separator in toString() */
     public static final String SEPARATOR= " - ";
@@ -71,7 +57,7 @@ public class FluTree {
     private Set<FluTree> children;
 
     /** Constructor: a new FluTree with root p and no children. <br>
-     * Throw an IllegalArgumentException if p is null. */
+     * Throws an IllegalArgumentException if p is null. */
     public FluTree(Person p) throws IllegalArgumentException {
         if (p == null)
             throw new IllegalArgumentException(
@@ -82,7 +68,7 @@ public class FluTree {
 
     /** Constructor: a new FluTree that is a copy of tree p. <br>
      * Tree p and its copy have no node in common (but nodes can share a Person). <br>
-     * Throw an IllegalArgumentException if p is null. */
+     * Throws an IllegalArgumentException if p is null. */
     public FluTree(FluTree p) throws IllegalArgumentException {
         if (p == null)
             throw new IllegalArgumentException(
@@ -126,16 +112,11 @@ public class FluTree {
 
     /** Insert c in this FluTree as a child of p and return <br>
      * the FluTree object whose root is the new child. <br>
-     * Throw an IllegalArgumentException if:<br>
+     * Throws an IllegalArgumentException if:<br>
      * -- c or p is null, or<br>
      * -- c is already in this FluTree, or<br>
      * -- p is not in this FluTree. */
     public FluTree insert(Person c, Person p) throws IllegalArgumentException {
-        // TODO 1
-        // This method should not be recursive.
-        // Use method node(), above, and use no methods that are below.
-        // DO NOT traverse the tree twice looking for the same node
-        // ---don't duplicate work.
         if (p == null || c == null) { throw new IllegalArgumentException(); }
         FluTree pNew= node(p);
         if (pNew == null || node(c) != null) {
@@ -149,8 +130,6 @@ public class FluTree {
     /** = the number of nodes in this FluTree. <br>
      * Note: If this is a leaf, the size is 1 (just the root) */
     public int size() {
-        // TODO 2. This method must be recursive.
-        // State whether this is a searching or a counting method: counting
         if (childrenSize() == 0) { return 1; }
         int sum= 1;
         for (FluTree root : children) {
@@ -161,17 +140,6 @@ public class FluTree {
 
     /** = "this flu tree contains a node with person p." */
     public boolean contains(Person p) {
-        // TODO 3
-        // Note: This may be the first method you write that may test whether two
-        // Persons r and p are equal. For all such tests, always use function equals:
-        //
-        // r.equals(p)
-        //
-        // If you write this recursively,
-        // state whether this is a searching or a counting method: searching
-        //
-        // Recursive definition: This FluTree contains p iff the root of
-        // this FluTree is p or if one of p's children contains p.
         if (p == null) { return false; }
         if (root.equals(p)) { return true; }
         for (FluTree ch : children) {
@@ -183,21 +151,8 @@ public class FluTree {
     /** = the depth at which p occurs in this FluTree, or <br>
      * -1 if p is not in the FluTree. <br>
      * Note: depth(root) is 0. <br>
-     * If p is a child of this FluTree node, then depth(p) is 1. etc. Note: if p is null, it is
-     * obviously NOT in the tree, but DO NOT<br>
-     * put in a special test for it; it would be unnecessary case analysis. */
+     * If p is a child of this FluTree node, then depth(p) is 1. etc.
     public int depth(Person p) {
-        // TODO 4
-        // Note: Do NOT call function contains(p) to find out whether p is in
-        // the tree. Do not have unnecessary calls that traverse the tree.
-        // Study the two tutorials on processing recursive calls and use the
-        // correct pattern here.
-        // State whether this is a searching or a counting method: searching
-
-        // Here is recursive insight:
-        // ... Let child c of the root contain p.
-        // ... Then the depth of p in the root = (1 + depth of p in c)
-
         if (root.equals(p)) { return 0; }
         for (FluTree ch : children) {
             int n= 1 + ch.depth(p);
@@ -226,15 +181,6 @@ public class FluTree {
      * A.widthAtDepth(2) = 3, A.widthAtDepth(3) = 1, A.widthAtDepth(4) = 0.<br>
      * C.widthAtDepth(0) = 1, C.widthAtDepth(1) = 2, C.widthAtDepth(1) = 2 */
     public int widthAtDepth(int d) throws IllegalArgumentException {
-        // TODO 5
-        // It may help to read Piazza note @567, Stepwise refinement, when developing widthAtDepth.
-        // Do not have calls that unnecessarily traverse the tree, causing the tree to be
-        // traversed more than once.
-        // State whether this is a searching or a counting method: counting
-
-        // Use this recursive definition:
-        // ..... If d = 0, the answer is 1.
-        // ..... If d > 0, the answer is: sum of widths of the children at depth d-1.
         if (d < 0) { throw new IllegalArgumentException(); }
         if (d == 0) { return 1; }
         int deep= 0;
@@ -265,25 +211,6 @@ public class FluTree {
      * B.fluRouteTo(C) returns null. <br>
      * B.fluRouteTo(D) returns the list [B,D] */
     public List<Person> fluRouteTo(Person c) {
-        // TODO 6
-        // 0. Calling getParent will give you 0 for this method. It is too inefficient,
-        // requiring possible many traversals of the tree.
-        //
-        // 1. The method must return a List<Person> object. But List is an interface, so
-        // use something that implements it. LinkedList<Person> is preferred to ArrayList<Person>,
-        // because prepend (or its equivalent) may have to be used.
-
-        // 2. The ONLY case in which this method must create a list object (using
-        // a new expression new ArrayList<>() or new LinkedList<>()) is the base
-        // case, when c is the root. Do NOT create a new list object using a new-expression
-        // in the recursive case.
-
-        // 3. If c is null, there is no route to it, so null should be returned. But do NOT
-        // put in a special test for this case; it is unnecessary case analysis.
-
-        // 4. Base Case: The root of this FluTree is c; i.e. the Route is just [c].
-
-        // State whether this is a searching or a counting method: searching
         if (root.equals(c)) {
             LinkedList<Person> l= new LinkedList<>();
             l.add(root);
@@ -328,20 +255,6 @@ public class FluTree {
      * B.commonAncestor(D, H) is null<br>
      * A.commonAncestor(null, C) is null */
     public Person commonAncestor(Person child1, Person child2) {
-        // TODO 7
-        /* Do not use method getParent(), which is far below. Its use over and over again
-         * is inefficient. Calling getParent results in a grade of 0 for this method.
-         *
-         * Instead, find the flu routes l1 and l2 to the two children. If both are not
-         * null, then two things are known:
-         * (1) l1[0] = l2[0]
-         * (2) the answer l1[i] is the largest i such that l1[0..i] = l2[0..i].
-         * If this is not clear, draw an example.
-         * The answer, then, can be found using a loop. No recursion is needed.
-         *
-         * You have a problem of writing this loop efficiently. You can't use a foreach loop
-         * on both lists simultaneously. The simplest thing to do is to use List's
-         * function toArray twice and then work with the array representations of the lists. */
         if (child1 == null || child2 == null) { return null; }
         List<Person> l1= fluRouteTo(child1);
         List<Person> l2= fluRouteTo(child2);
@@ -378,42 +291,9 @@ public class FluTree {
      * -------- for every FluTree t1 in s1 there is a FluTree<br>
      * -------- t2 in s2 for which t1.equals(t2) is true.<br>
      *
-     * -- Otherwise the two FluTrees are not equal.<br>
-     * Do not use any of the toString functions to write equals(). <br>
-     * Do not use Set's functions equals, contains, or containsAll. */
+     * -- Otherwise the two FluTrees are not equal.<br>*/
     @Override
     public boolean equals(Object ob) {
-        // TODO 8
-        // The specification outlines what must be done in detail. Two points to discuss:
-        // (1) Stay away from nested ifs as much as possible! Instead, as soon as it is
-        // determined that a property for equality is not met (or is met), return false (or true)!
-        // So the structure could be:
-
-        // if (property 1 not met) return false;
-        // if (property 2 not met) return false;
-        // etc.
-
-        // (2) The difficult part is testing this:
-        // ... for every FluTree t1 in s1, there is a FluTree t2
-        // ... in s2 for which t1.equals(t2) is true.
-        //
-        // We suggest you write a helper method with this specification:
-        // /** Return true iff t1 equals some member of s2 */
-        // private boolean help(FluTree t1, Set<FluTree> s2)
-        //
-        // Note that this method is going to call equals, like this: s2.equals(...).
-        // That is a call to the method you are trying to write! We have
-        // mutual recursion: equals calls help, which calls equals, which call help ...
-        // But when thinking about what a call does, USE THE SPECIFICATION to understand
-        // what it does.
-        //
-        // Hint about checking whether each child of one tree equals SOME
-        // tree of the other tree's children.
-        // First, you have to check them all until you find an equal one (or
-        // return false if you don't.)
-        // Second, A child of one tree cannot equal more than one child of
-        // tree because the names of Person's are all unique;
-        // there are no duplicates.
         if (this == null || ob == null) { return false; }
         if (this.getClass() != ob.getClass()) { return false; }
         FluTree obj= (FluTree) ob;
@@ -431,12 +311,6 @@ public class FluTree {
         }
         return true;
     }
-
-    /* ========================================================================
-     * ========================================================================
-     * ========================================================================
-     * Do not use the methods written below. They are used to calculate data
-     * for the GUI. Feel free to read/study them. */
 
     /** Return the maximum depth of this FluTree, <br>
      * i.e. the longest path from the root to a leaf.<br>
@@ -481,168 +355,3 @@ public class FluTree {
 
         return null; // Not found
     }
-
-    /** Return the maximum width of all the widths in this tree, <br>
-     * i.e. the maximum value that could be returned from widthAtDepth for this tree. */
-    public int maxWidth() {
-        return maxWidthImplementationTwo(this);
-    }
-
-    /** Simple implementation of maxWidth. <br>
-     * Relies on widthAtDepth. <br>
-     * Takes time proportional to the square of the size of the t. */
-    static int maxWidthImplementationOne(FluTree t) {
-        int width= 0;
-        int depth= t.maxDepth();
-        for (int i= 0; i <= depth; i++ ) {
-            width= Math.max(width, t.widthAtDepth(i));
-        }
-        return width;
-    }
-
-    /** Better implementation of maxWidth. Caches results in an array. <br>
-     * Takes time proportional to the size of t. */
-    static int maxWidthImplementationTwo(FluTree t) {
-        // For each integer d, 0 <= d <= maximum depth of t, store in
-        // widths[d] the number of nodes at depth d in t.
-        // The calculation is done by calling recursive procedure addToWidths.
-        int[] widths= new int[t.maxDepth() + 1];   // initially, contains 0's
-        t.addToWidths(0, widths);
-
-        int max= 0;
-        for (int width : widths) {
-            max= Math.max(max, width);
-        }
-        return max;
-    }
-
-    /** For each node of this FluTree, which is at some depth d in this FluTree,<br>
-     * add 1 to widths[depth + d]. */
-    private void addToWidths(int depth, int[] widths) {
-        widths[depth]++ ;        // the root of this FluTree is at depth d = 0
-        for (FluTree dt : children) {
-            dt.addToWidths(depth + 1, widths);
-        }
-    }
-
-    /** Better implementation of maxWidth. Caches results in a HashMap. <br>
-     * Takes time proportional to the size of t. */
-    static int maxWidthImplementationThree(FluTree t) {
-        // For each possible depth d >= 0 in tree t, widthMap will contain the
-        // entry (d, number of nodes at depth d in t). The calculation is
-        // done using recursive procedure addToWidthMap.
-
-        // For each integer d, 0 <= d <= maximum depth of t, add to
-        // widthMap an entry <d, 0>.
-        HashMap<Integer, Integer> widthMap= new HashMap<>();
-        for (int d= 0; d <= t.maxDepth() + 1; d++ ) {
-            widthMap.put(d, 0);
-        }
-
-        t.addToWidthMap(0, widthMap);
-
-        int max= 0;
-        for (Integer w : widthMap.values()) {
-            max= Math.max(max, w);
-        }
-        return max;
-    }
-
-    /** For each node of this FluTree, which is at some depth d in this FluTree,<br>
-     * add 1 to the value part of entry <depth + d, ...> of widthMap. */
-    private void addToWidthMap(int depth, HashMap<Integer, Integer> widthMap) {
-        widthMap.put(depth, widthMap.get(depth) + 1);  // the root is at depth d = 0
-        for (FluTree dt : children) {
-            dt.addToWidthMap(depth + 1, widthMap);
-        }
-    }
-
-    /** Return a (single line) String representation of this FluTree.<br>
-     * If this FluTree has no children (it is a leaf), return the root's substring.<br>
-     * Otherwise, return<br>
-     * ... root's substring + SEPARATOR + START_CHILDREN_DELIMITER + each child's<br>
-     * ... toString, separated by DELIMITER, followed by END_CHILD_DELIMITER.<br>
-     *
-     * Make sure there is not an extra DELIMITER following the last child.<br>
-     *
-     * Finally, make sure to use the static final fields declared at the top of<br>
-     * FluTree.java.<br>
-     *
-     * Thus, for the following tree:
-     *
-     * <pre>
-     * Depth level:
-     *   0         A
-     *            / \
-     *   1        B  C
-     *           /  / \
-     *   2      D  E   F
-     *           \
-     *   3        G
-     *
-     * A.toString() should print:
-     * (A) - HEALTHY - [(C) - HEALTHY - [(F) - HEALTHY, (E) - HEALTHY - [(G) - HEALTHY]], (B) - HEALTHY - [(D) - HEALTHY]]
-     *
-     * C.toString() should print:
-     * (C) - HEALTHY - [(F) - HEALTHY, (E) - HEALTHY - [(G) - HEALTHY]]
-     * </pre>
-     */
-    @Override
-    public String toString() {
-        if (children.isEmpty()) return root.toString();
-        String s= root.toString() + SEPARATOR + START_CHILDREN_DELIMITER;
-        for (FluTree dt : children) {
-            s= s + dt.toString() + DELIMITER;
-        }
-        return s.substring(0, s.length() - 2) + END_CHILDREN_DELIMITER;
-    }
-
-    /** Return a verbose (multi-line) string representing this FluTree. */
-    public String toStringVerbose() {
-        return toStringVerbose(0);
-    }
-
-    /** Return a verbose (multi-line) string representing this FluTree.<br>
-     * Each human in the tree is on its own line, with indentation representing<br>
-     * what each human is a child of.<br>
-     * indent is the the amount of indentation to put before this line.<br>
-     * Should increase on recursive calls to children to create the above pattern.<br>
-     * Thus, for the following tree:
-     *
-     * <pre>
-     * Depth level:
-     *   0         A
-     *            / \
-     *   1       B   C
-     *          /   / \
-     *   2     D   E   F
-     *          \
-     *   3       G
-     *
-     * A.toStringVerbose(0) should return:
-     * (A) - HEALTHY
-     * (C) - HEALTHY
-     * (F) - HEALTHY
-     * (E) - HEALTHY
-     * (G) - HEALTHY
-     * (B) - HEALTHY
-     * (D) - HEALTHY
-     * </pre>
-     *
-     * Make sure to use VERBOSE_SPACE_INCREMENT for indentation. */
-    private String toStringVerbose(int indent) {
-        String s= "";
-        for (int i= 0; i < indent; i++ ) {
-            s= s + VERBOSE_SPACE_INCREMENT;
-        }
-        s= s + root.toString();
-
-        if (children.isEmpty()) return s;
-
-        for (FluTree dt : children) {
-            s= s + "\n" + dt.toStringVerbose(indent + 1);
-        }
-        return s;
-    }
-
-}
